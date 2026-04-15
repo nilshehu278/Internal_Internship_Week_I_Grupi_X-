@@ -1,0 +1,121 @@
+#include <stdio.h>
+
+int main() {
+    char emri[50];
+    int mosha;
+    float paga;
+    char gjinia;
+    int viteExperience;
+    double kursimet;
+    char niveli[20];
+
+    printf("SISTEMI I PUNONJESVE\n\n");
+
+    printf("Emri dhe mbiemri : ");
+    scanf("%s", emri);
+
+    printf("Mosha            : ");
+    scanf("%d", &mosha);
+
+    printf("Gjinia (M/F)     : ");
+    scanf(" %c", &gjinia);
+
+    printf("Vite eksperience : ");
+    scanf("%d", &viteExperience);
+
+    printf("Paga baze (euro) : ");
+    scanf("%f", &paga);
+
+    printf("Kursime (euro)   : ");
+    scanf("%lf", &kursimet);
+
+    // Llogaritjet
+    float bonus = 0.0f;
+    float pagaFinale = 0.0f;
+    float tatimi = 0.0f;
+    float pagaNeto = 0.0f;
+
+    if (viteExperience >= 10) {
+        bonus = paga * 0.30f;
+    } else if (viteExperience >= 5) {
+        bonus = paga * 0.15f;
+    } else if (viteExperience >= 2) {
+        bonus = paga * 0.05f;
+    } else {
+        bonus = 0.0f;
+    }
+
+    pagaFinale = paga + bonus;
+
+    if (pagaFinale > 3000.0f) {
+        tatimi = pagaFinale * 0.25f;
+    } else if (pagaFinale > 1500.0f) {
+        tatimi = pagaFinale * 0.15f;
+    } else if (pagaFinale > 500.0f) {
+        tatimi = pagaFinale * 0.10f;
+    } else {
+        tatimi = 0.0f;
+    }
+
+    pagaNeto = pagaFinale - tatimi;
+
+    if (viteExperience >= 10) {
+        sprintf(niveli, "Senior");
+    } else if (viteExperience >= 5) {
+        sprintf(niveli, "Mid-level");
+    } else if (viteExperience >= 2) {
+        sprintf(niveli, "Junior");
+    } else {
+        sprintf(niveli, "Intern");
+    }
+
+    // Rezultatet
+    printf("\nRAJPOTI I PUNONJESIT\n");
+    printf("--------------------\n");
+
+    printf("Emri        : %s\n", emri);
+
+    if (gjinia == 'M' || gjinia == 'm') {
+        printf("Gjinia      : Mashkull\n");
+    } else if (gjinia == 'F' || gjinia == 'f') {
+        printf("Gjinia      : Femer\n");
+    } else {
+        printf("Gjinia      : E panjohur\n");
+    }
+
+    printf("Mosha       : %d\n", mosha);
+    printf("Eksperienca : %d vite\n", viteExperience);
+    printf("Niveli      : %s\n", niveli);
+
+    printf("\nDETAJET FINANCIARE\n");
+    printf("------------------\n");
+    printf("Paga baze   : %.2f euro\n", paga);
+    printf("Bonus       : %.2f euro\n", bonus);
+    printf("Paga bruto  : %.2f euro\n", pagaFinale);
+    printf("Tatimi      : %.2f euro\n", tatimi);
+    printf("Paga neto   : %.2f euro\n", pagaNeto);
+    printf("Kursime     : %.2lf euro\n", kursimet);
+
+    printf("\nSTATUSI\n");
+    printf("-------\n");
+
+    if (kursimet >= 10000.0) {
+        printf("Statusi     : Financiarisht stabil\n");
+    } else if (kursimet >= 3000.0) {
+        printf("Statusi     : Mesatar\n");
+    } else {
+        printf("Statusi     : Duhen me shume kursime\n");
+    }
+
+    if (mosha < 25) {
+        printf("Keshilla    : Investo ne karriere\n");
+    } else if (mosha < 40) {
+        printf("Keshilla    : Kurse per shtepi\n");
+    } else if (mosha < 60) {
+        printf("Keshilla    : Planifiko pensionin\n");
+    } else {
+        printf("Keshilla    : Enjoy retirement!\n");
+    }
+
+    return 0;
+}
