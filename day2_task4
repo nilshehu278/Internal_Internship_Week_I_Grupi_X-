@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+int main(void) {
+    int age;
+    char initial;
+    float height;
+    double averageGrade;
+
+    short birthYear = 2004;
+    long favoriteNumber = 1234567890L;
+
+    printf("=== Profili i Shkurter i Perdoruesit ===\n\n");
+
+    printf("Shkruaj moshen (int): ");
+    if (scanf("%d", &age) != 1) {
+        printf("Input i pavlefshem per moshen.\n");
+        return 1;
+    }
+
+    printf("Shkruaj inicialin (char): ");
+    if (scanf(" %c", &initial) != 1) {
+        printf("Input i pavlefshem per inicialin.\n");
+        return 1;
+    }
+
+    printf("Shkruaj gjatesine ne metra (float): ");
+    if (scanf("%f", &height) != 1) {
+        printf("Input i pavlefshem per gjatesine.\n");
+        return 1;
+    }
+
+    printf("Shkruaj mesataren (double): ");
+    if (scanf("%lf", &averageGrade) != 1) {
+        printf("Input i pavlefshem per mesataren.\n");
+        return 1;
+    }
+
+    printf("\n--- Profili i Perdoruesit ---\n");
+    printf("Mosha: %d\n", age);
+    printf("Iniciali: %c\n", initial);
+    printf("Gjatesia: %.2f m\n", height);
+    printf("Mesatarja: %.2lf\n", averageGrade);
+    printf("Viti i lindjes (short): %hd\n", birthYear);
+    printf("Numri i preferuar (long): %ld\n", favoriteNumber);
+
+    return 0;
+}
