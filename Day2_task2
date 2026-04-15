@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int main(void) {
+    int score;
+
+    printf("Shkruaj rezultatin (0-100): ");
+    if (scanf("%d", &score) != 1) {
+        printf("Input i pavlefshem. Ju lutem shkruani nje numer te plote.\n");
+        return 1;
+    }
+
+    if (score < 0 || score > 100) {
+        printf("Input i pavlefshem: rezultati duhet te jete nga 0 deri ne 100.\n");
+    } else if (score >= 90) {
+        printf("Vleresimi: Shkelqyeshem\n");
+    } else if (score >= 75) {
+        printf("Vleresimi: Shume mire\n");
+    } else if (score >= 60) {
+        printf("Vleresimi: Mire\n");
+    } else {
+        printf("Vleresimi: Ne permiresim\n");
+    }
+
+    return 0;
+}
