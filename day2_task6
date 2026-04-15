@@ -1,0 +1,79 @@
+#include <stdio.h>
+
+int main(void) {
+    int age;
+    char initial;
+    double preliminaryPoints;
+    int workshopOption;
+    int minAge = 14;
+    int maxAge = 19;
+    const char *readiness;
+    const char *workshopName;
+
+    printf("=== Regjistrim i Thjeshte ne Punetori ===\n\n");
+
+    printf("Shkruaj moshen (int): ");
+    if (scanf("%d", &age) != 1) {
+        printf("Input i pavlefshem per moshen.\n");
+        return 1;
+    }
+
+    printf("Shkruaj inicialin (char): ");
+    if (scanf(" %c", &initial) != 1) {
+        printf("Input i pavlefshem per inicialin.\n");
+        return 1;
+    }
+
+    printf("Shkruaj piket paraprake (double): ");
+    if (scanf("%lf", &preliminaryPoints) != 1) {
+        printf("Input i pavlefshem per piket.\n");
+        return 1;
+    }
+
+    printf("Zgjidh punetorine (1, 2 ose 3): ");
+    if (scanf("%d", &workshopOption) != 1) {
+        printf("Input i pavlefshem per opsionin e punetorise.\n");
+        return 1;
+    }
+
+    if (preliminaryPoints < 0.0 || preliminaryPoints > 100.0) {
+        readiness = "pike te pavlefshme";
+    } else if (preliminaryPoints < 50.0) {
+        readiness = "nevojitet me shume ushtrim";
+    } else if (preliminaryPoints < 80.0) {
+        readiness = "gati per vazhdim";
+    } else {
+        readiness = "gati per sfide";
+    }
+
+    switch (workshopOption) {
+        case 1:
+            workshopName = "Programim Bazik";
+            break;
+        case 2:
+            workshopName = "Algoritme dhe Logjike";
+            break;
+        case 3:
+            workshopName = "Projekte Praktike";
+            break;
+        default:
+            workshopName = "Opsion i pavlefshem";
+            break;
+    }
+
+    printf("\n--- Permbledhja e Regjistrimit ---\n");
+    printf("Mosha: %d\n", age);
+    printf("Iniciali: %c\n", initial);
+    printf("Piket paraprake: %.2lf\n", preliminaryPoints);
+    printf("Opsioni i punetorise: %d\n", workshopOption);
+    printf("Punetoria e zgjedhur: %s\n", workshopName);
+    printf("Klasifikimi: %s\n", readiness);
+
+    if (age >= minAge && age <= maxAge) {
+        printf("Statusi i moshes: Brenda kufirit per pjesemarrje (%d-%d).\n", minAge, maxAge);
+    } else {
+        printf("Statusi i moshes: Jashte kufirit te pjesemarrjes (%d-%d).\n", minAge, maxAge);
+    }
+
+    return 0;
+}
