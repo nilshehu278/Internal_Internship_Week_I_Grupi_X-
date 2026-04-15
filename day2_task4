@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main(void) {
+    int age;
+    char initial;
+    float height;
+    double averageGrade;
+    short favoriteNumber = 12;
+    long populationCode = 2026001L;
+
+    printf("Shkruani moshen tuaj: ");
+    scanf("%d", &age);
+
+    printf("Shkruani inicialin tuaj: ");
+    scanf(" %c", &initial);
+
+    printf("Shkruani gjatesine tuaj (m): ");
+    scanf("%f", &height);
+
+    printf("Shkruani mesataren tuaj: ");
+    scanf("%lf", &averageGrade);
+
+    printf("\n--- Profili i Perdoruesit ---\n");
+    printf("Mosha (int): %d\n", age);
+    printf("Iniciali (char): %c\n", initial);
+    printf("Gjatesia (float): %.2f\n", height);
+    printf("Mesatarja (double): %.2lf\n", averageGrade);
+    printf("Numri i preferuar (short): %hd\n", favoriteNumber);
+    printf("Kodi i popullsise (long): %ld\n", populationCode);
+
+    return 0;
+}
