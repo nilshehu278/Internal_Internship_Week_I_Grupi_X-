@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+int main(void) {
+    int day;
+
+    printf("Shkruani nje numer nga 1 deri ne 7: ");
+    if (scanf("%d", &day) != 1) {
+        printf("Input i pavlefshem. Ju lutem jepni nje numer nga 1 deri ne 7.\n");
+        return 1;
+    }
+
+    switch (day) {
+        case 1:
+            printf("1 - E Hene | Dite pune.\n");
+            break;
+        case 2:
+            printf("2 - E Marte | Dite pune.\n");
+            break;
+        case 3:
+            printf("3 - E Merkure | Dite pune.\n");
+            break;
+        case 4:
+            printf("4 - E Enjte | Dite pune.\n");
+            break;
+        case 5:
+            printf("5 - E Premte | Dite pune.\n");
+            break;
+        case 6:
+            printf("6 - E Shtune | Fundjave.\n");
+            break;
+        case 7:
+            printf("7 - E Diele | Fundjave.\n");
+            break;
+        default:
+            printf("Numer i pavlefshem. Perdorni nje vlere nga 1 deri ne 7.\n");
+            break;
+    }
+
+    return 0;
+}
