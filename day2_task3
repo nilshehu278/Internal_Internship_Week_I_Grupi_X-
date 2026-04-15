@@ -1,0 +1,114 @@
+#include <stdio.h>
+
+int main() {
+    int age;
+    short birthYear;
+    long population;
+    char grade;
+    float height;
+    double salary;
+    int examScore;
+    int dayOption;
+
+    printf("=== Internal Internship - Week 1 - Day 2 (C) ===\n\n");
+
+    printf("Shkruaj moshen (int): ");
+    if (scanf("%d", &age) != 1) {
+        printf("Input i pavlefshem per moshen.\n");
+        return 1;
+    }
+
+    printf("Shkruaj vitin e lindjes (short): ");
+    if (scanf("%hd", &birthYear) != 1) {
+        printf("Input i pavlefshem per vitin e lindjes.\n");
+        return 1;
+    }
+
+    printf("Shkruaj popullsine e qytetit (long): ");
+    if (scanf("%ld", &population) != 1) {
+        printf("Input i pavlefshem per popullsine.\n");
+        return 1;
+    }
+
+    printf("Shkruaj noten me nje karakter (char, p.sh. A): ");
+    if (scanf(" %c", &grade) != 1) {
+        printf("Input i pavlefshem per noten.\n");
+        return 1;
+    }
+
+    printf("Shkruaj gjatesine ne metra (float, p.sh. 1.75): ");
+    if (scanf("%f", &height) != 1) {
+        printf("Input i pavlefshem per gjatesine.\n");
+        return 1;
+    }
+
+    printf("Shkruaj page mujore (double, p.sh. 850.50): ");
+    if (scanf("%lf", &salary) != 1) {
+        printf("Input i pavlefshem per pagen.\n");
+        return 1;
+    }
+
+    printf("\n--- Te dhenat e lexuara ---\n");
+    printf("Mosha: %d\n", age);
+    printf("Viti i lindjes: %hd\n", birthYear);
+    printf("Popullsia e qytetit: %ld\n", population);
+    printf("Nota: %c\n", grade);
+    printf("Gjatesia: %.2f m\n", height);
+    printf("Paga mujore: %.2f EUR\n", salary);
+
+    /* if, else if, else */
+    printf("\nShkruaj rezultatin e testit (0 - 100): ");
+    if (scanf("%d", &examScore) != 1) {
+        printf("Input i pavlefshem per rezultatin e testit.\n");
+        return 1;
+    }
+
+    if (examScore >= 90 && examScore <= 100) {
+        printf("Vleresimi: Shkelqyeshem\n");
+    } else if (examScore >= 75) {
+        printf("Vleresimi: Shume mire\n");
+    } else if (examScore >= 60) {
+        printf("Vleresimi: Mire\n");
+    } else if (examScore >= 0) {
+        printf("Vleresimi: Nevoje per permiresim\n");
+    } else {
+        printf("Input i pavlefshem per rezultat testi.\n");
+    }
+
+    /* switch */
+    printf("\nZgjidh nje dite te javes (1-7): ");
+    if (scanf("%d", &dayOption) != 1) {
+        printf("Input i pavlefshem per diten e javes.\n");
+        return 1;
+    }
+
+    switch (dayOption) {
+        case 1:
+            printf("Dita 1: E Hene\n");
+            break;
+        case 2:
+            printf("Dita 2: E Marte\n");
+            break;
+        case 3:
+            printf("Dita 3: E Merkure\n");
+            break;
+        case 4:
+            printf("Dita 4: E Enjte\n");
+            break;
+        case 5:
+            printf("Dita 5: E Premte\n");
+            break;
+        case 6:
+            printf("Dita 6: E Shtune\n");
+            break;
+        case 7:
+            printf("Dita 7: E Diele\n");
+            break;
+        default:
+            printf("Zgjedhje e pavlefshme. Perdorni vlere nga 1 deri ne 7.\n");
+            break;
+    }
+
+    printf("\nProgrami perfundoi me sukses.\n");
+    return 0;
+}
