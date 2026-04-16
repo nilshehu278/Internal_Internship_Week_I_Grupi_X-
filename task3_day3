@@ -1,0 +1,84 @@
+#include <stdio.h>
+
+int main(void) {
+    int start;
+    int end;
+    int countDivBy3 = 0;
+    int countDivBy5Not3 = 0;
+    long long sumDivBy3 = 0;
+    long long sumDivBy5Not3 = 0;
+
+    printf("=== Day 3 - Task 3: Krahasimi i Shumave ne Interval ===\n");
+
+    printf("Shkruani fillimin e intervalit: ");
+    if (scanf("%d", &start) != 1) {
+        printf("Input i pavlefshem per fillimin e intervalit.\n");
+        return 1;
+    }
+
+    printf("Shkruani fundin e intervalit: ");
+    if (scanf("%d", &end) != 1) {
+        printf("Input i pavlefshem per fundin e intervalit.\n");
+        return 1;
+    }
+
+    if (start > end) {
+        printf("Interval i pavlefshem: fillimi duhet te jete <= fundi.\n");
+        return 1;
+    }
+
+    for (int number = start; number <= end; number++) {
+        if (number % 3 == 0) {
+            countDivBy3++;
+            sumDivBy3 += number;
+        } else if (number % 5 == 0) {
+            countDivBy5Not3++;
+            sumDivBy5Not3 += number;
+        }
+    }
+
+    printf("\n--- Rezultatet ---\n");
+    printf("Intervali: [%d, %d]\n", start, end);
+    printf("Kategoria 1 (pjestohen me 3): numeruesi = %d, shuma = %lld\n", countDivBy3, sumDivBy3);
+    printf("Kategoria 2 (pjestohen me 5 por jo me 3): numeruesi = %d, shuma = %lld\n", countDivBy5Not3, sumDivBy5Not3);
+
+    if (sumDivBy3 > sumDivBy5Not3) {
+        printf("Shuma me e madhe: Kategoria 1 (pjestohen me 3).\n");
+    } else if (sumDivBy5Not3 > sumDivBy3) {
+        printf("Shuma me e madhe: Kategoria 2 (pjestohen me 5 por jo me 3).\n");
+    } else {
+        printf("Shumat jane te barabarta.\n");
+    }
+
+    return 0;
+}
+day3_task3_dokumentim.docx
+day3_task3_dokumentim.docx
+New
+Binary file not shown
+day3_task3_dokumentim.txt
+day3_task3_dokumentim.txt
+New
++20
+-0
+
+Internal Internship - Week 1 - Day 3 - Task 3
+
+Ne kete detyre kam ndertuar nje program ne C qe punon me nje interval numrash te dhene nga perdoruesi.
+Programi perdor nje for loop per te kaluar cdo numer nga fillimi deri te fundi i intervalit.
+
+Per cdo numer kontrollohen kushtet me renditje te qarte:
+1) Nese numri pjestohet me 3, regjistrohet ne kategorine e pare (numerues dhe shume).
+2) Perndryshe, nese numri pjestohet me 5, regjistrohet ne kategorine e dyte (numra qe pjestohen me 5 por jo me 3).
+
+Perdorimi i else if garanton qe i njejti numer te mos futet ne dy kategori njekohesisht.
+Ne fund programi shfaq numeruesit dhe shumat e te dy kategorive, pastaj i krahason shumat dhe afishon cila eshte me e madhe ose nese jane te barabarta.
+
+Trajtohet input-i i pavlefshem:
+- nese vlerat nuk lexohen si integer,
+- ose nese fillimi i intervalit eshte me i madh se fundi,
+programi ndalon me mesazh gabimi.
+
+Shembuj testimi:
+- Intervali [1, 20]: kategoria e numrave qe pjestohen me 3 ka shume me te madhe.
+- Intervali [10, 30]: kryhet analiza e plote dhe krahasimi i shumave.
