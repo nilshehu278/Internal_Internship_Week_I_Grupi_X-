@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+int main() {
+    int start, end;
+
+    int sum3 = 0, count3 = 0;
+    int sum5 = 0, count5 = 0;
+
+    // Marrja e input-it
+    printf("Shkruani fillimin e intervalit: ");
+    scanf("%d", &start);
+
+    printf("Shkruani fundin e intervalit: ");
+    scanf("%d", &end);
+
+    // Validimi i input-it
+    if (start > end) {
+        printf("Input i pavlefshem! Fillimi duhet te jete me i vogel ose i barabarte me fundin.\n");
+        return 1;
+    }
+
+    // Loop për intervalin
+    for (int i = start; i <= end; i++) {
+
+        // Numrat pjesetues me 3
+        if (i % 3 == 0) {
+            sum3 += i;
+            count3++;
+        }
+        // Numrat pjesetues me 5 por JO me 3
+        else if (i % 5 == 0 && i % 3 != 0) {
+            sum5 += i;
+            count5++;
+        }
+    }
+
+    // Output rezultatet
+    printf("\n--- Rezultatet ---\n");
+    printf("Shuma e numrave qe pjestohen me 3: %d (count = %d)\n", sum3, count3);
+    printf("Shuma e numrave qe pjestohen me 5 por jo me 3: %d (count = %d)\n", sum5, count5);
+
+    // Krahasimi i shumave
+    if (sum3 > sum5) {
+        printf("Shuma e numrave qe pjestohen me 3 eshte ME E MADHE.\n");
+    }
+    else if (sum5 > sum3) {
+        printf("Shuma e numrave qe pjestohen me 5 eshte ME E MADHE.\n");
+    }
+    else {
+        printf("Te dy shumat jane TE BARABARTA.\n");
+    }
+
+    return 0;
+}
