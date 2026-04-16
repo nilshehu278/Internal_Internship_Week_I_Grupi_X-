@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+int main(void) {
+    int number;
+    int change;
+    double decimalNumber;
+
+    printf("=== Day 3 - Task 4: Pointers me Vlera Numerike ===\n");
+
+    printf("Shkruani nje vlere int: ");
+    if (scanf("%d", &number) != 1) {
+        printf("Gabim: int i pavlefshem.\n");
+        return 1;
+    }
+
+    printf("Shkruani nje vlere double: ");
+    if (scanf("%lf", &decimalNumber) != 1) {
+        printf("Gabim: double i pavlefshem.\n");
+        return 1;
+    }
+
+    printf("Shkruani ndryshimin per int (mund te jete negativ, zero ose pozitiv): ");
+    if (scanf("%d", &change) != 1) {
+        printf("Gabim: ndryshimi i pavlefshem.\n");
+        return 1;
+    }
+
+    int *pNumber = &number;
+    double *pDecimal = &decimalNumber;
+
+    int initialNumber = *pNumber;
+    double initialDecimal = *pDecimal;
+
+    printf("\n--- Gjendja Fillestare ---\n");
+    printf("Vlera direkte (int): %d\n", number);
+    printf("Adresa ne memorie e int: %p\n", (void *)&number);
+    printf("Vlera permes pointer-it te int (*pNumber): %d\n", *pNumber);
+
+    printf("\nVlera direkte (double): %.2f\n", decimalNumber);
+    printf("Adresa ne memorie e double: %p\n", (void *)&decimalNumber);
+    printf("Vlera permes pointer-it te double (*pDecimal): %.2f\n", *pDecimal);
+
+    *pNumber = *pNumber + change;
+    *pDecimal = (*pDecimal * 1.50) - 2.00;
+
+    printf("\n--- Pas Ndryshimit permes Pointer-ave ---\n");
+    printf("int para ndryshimit: %d\n", initialNumber);
+    printf("int pas ndryshimit: %d\n", *pNumber);
+
+    printf("double para ndryshimit: %.2f\n", initialDecimal);
+    printf("double pas ndryshimit: %.2f\n", *pDecimal);
+
+    printf("\n--- Vleresimi Final (if/else) ---\n");
+    if (*pNumber >= 0 && *pNumber <= 10) {
+        printf("Vlera perfundimtare e int eshte brenda intervalit [0, 10].\n");
+    } else if (*pNumber > initialNumber) {
+        printf("Vlera perfundimtare e int eshte RRITUR.\n");
+    } else if (*pNumber < initialNumber) {
+        printf("Vlera perfundimtare e int eshte ZVOGELUAR.\n");
+    } else {
+        printf("Vlera perfundimtare e int ka MBETUR E NJEJTE.\n");
+    }
+
+    return 0;
+}
