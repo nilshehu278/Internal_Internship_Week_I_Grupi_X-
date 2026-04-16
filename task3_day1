@@ -1,0 +1,57 @@
+1	#include <stdio.h>
+     2	
+     3	#define MIN_SIZE 1
+     4	#define MAX_SIZE 12
+     5	
+     6	void print_star_pattern(int size) {
+     7	    printf("\nPattern me yje:\n");
+     8	    for (int row = 1; row <= size; row++) {
+     9	        for (int col = 1; col <= row; col++) {
+    10	            printf("* ");
+    11	        }
+    12	        printf("\n");
+    13	    }
+    14	}
+    15	
+    16	void print_number_pattern(int size) {
+    17	    printf("\nPattern me numra:\n");
+    18	    for (int row = 1; row <= size; row++) {
+    19	        for (int col = 1; col <= row; col++) {
+    20	            printf("%d ", col);
+    21	        }
+    22	        printf("\n");
+    23	    }
+    24	}
+    25	
+    26	int main(void) {
+    27	    int size;
+    28	    int pattern_choice;
+    29	
+    30	    printf("Zgjidhni madhesine e pattern-it (%d-%d): ", MIN_SIZE, MAX_SIZE);
+    31	    if (scanf("%d", &size) != 1) {
+    32	        printf("Input i pavlefshem: ju lutem vendosni nje numer te plote.\n");
+    33	        return 1;
+    34	    }
+    35	
+    36	    if (size < MIN_SIZE || size > MAX_SIZE) {
+    37	        printf("Input jashte kufijve: vendosni nje numer nga %d deri ne %d.\n", MIN_SIZE, MAX_SIZE);
+    38	        return 1;
+    39	    }
+    40	
+    41	    printf("Zgjidhni pattern-in (1 = yje, 2 = numra): ");
+    42	    if (scanf("%d", &pattern_choice) != 1) {
+    43	        printf("Zgjedhje e pavlefshme: vendosni 1 ose 2.\n");
+    44	        return 1;
+    45	    }
+    46	
+    47	    if (pattern_choice == 1) {
+    48	        print_star_pattern(size);
+    49	    } else if (pattern_choice == 2) {
+    50	        print_number_pattern(size);
+    51	    } else {
+    52	        printf("Zgjedhje e pavlefshme: vendosni 1 ose 2.\n");
+    53	        return 1;
+    54	    }
+    55	
+    56	    return 0;
+    57	}
