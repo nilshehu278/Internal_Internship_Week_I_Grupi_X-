@@ -1,0 +1,64 @@
+#include <stdio.h>
+
+int main() {
+    int a;
+    float b;
+
+    // Pointerat
+    int *pA;
+    float *pB;
+
+    // Input
+    printf("Shkruani nje numer integer: ");
+    scanf("%d", &a);
+
+    printf("Shkruani nje numer float: ");
+    scanf("%f", &b);
+
+    // Caktimi i adresave
+    pA = &a;
+    pB = &b;
+
+    // Shfaqja fillestare
+    printf("\n--- Para ndryshimit ---\n");
+    printf("Vlera e a: %d\n", a);
+    printf("Adresa e a: %p\n", pA);
+    printf("Vlera e a permes pointer-it: %d\n", *pA);
+
+    printf("\nVlera e b: %.2f\n", b);
+    printf("Adresa e b: %p\n", pB);
+    printf("Vlera e b permes pointer-it: %.2f\n", *pB);
+
+    // Ruaj vlerat e vjetra
+    int oldA = a;
+    float oldB = b;
+
+    // Ndryshim përmes pointer-it
+    *pA = *pA + 10;     // rrit a me 10
+    *pB = *pB / 2;      // pjesëto b me 2
+
+    // Shfaqja pas ndryshimit
+    printf("\n--- Pas ndryshimit ---\n");
+    printf("Vlera e re e a: %d\n", a);
+    printf("Vlera e re e b: %.2f\n", b);
+
+    // Kontroll me if/else për a
+    printf("\n--- Analiza per a ---\n");
+    if (a > oldA) {
+        printf("a eshte RRITUR.\n");
+    } else if (a < oldA) {
+        printf("a eshte ZVOGELUAR.\n");
+    } else {
+        printf("a ka mbetur e njejte.\n");
+    }
+
+    // Kontroll me interval për b
+    printf("\n--- Analiza per b ---\n");
+    if (b >= 0 && b <= 10) {
+        printf("b eshte ne intervalin [0, 10].\n");
+    } else {
+        printf("b eshte jashte intervalit [0, 10].\n");
+    }
+
+    return 0;
+}
