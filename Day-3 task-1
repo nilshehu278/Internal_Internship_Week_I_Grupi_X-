@@ -1,0 +1,57 @@
+#include <stdio.h>
+
+#define MIN 1
+#define MAX 12
+
+// Enum për zgjedhjen e pattern-it
+typedef enum {
+    STARS = 1,
+    NUMBERS = 2
+} PatternType;
+
+int main() {
+    int n;
+    int choice;
+    PatternType type;
+
+    // Input për madhësinë e pattern-it
+    printf("Vendos madhesine e pattern-it (1-12): ");
+    scanf("%d", &n);
+
+    // Validimi i input-it
+    if (n < MIN || n > MAX) {
+        printf("Gabim: Vlera duhet te jete midis %d dhe %d.\n", MIN, MAX);
+        return 1;
+    }
+
+    // Zgjedhja e pattern-it
+    printf("Zgjidh pattern-in:\n");
+    printf("1 - Yje (*)\n");
+    printf("2 - Numra\n");
+    printf("Zgjedhja juaj: ");
+    scanf("%d", &choice);
+
+    if (choice != STARS && choice != NUMBERS) {
+        printf("Gabim: Zgjedhje e pavlefshme.\n");
+        return 1;
+    }
+
+    type = (PatternType)choice;
+
+    printf("\n--- OUTPUT ---\n");
+
+    // Gjenerimi i pattern-it
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++) {
+
+            if (type == STARS) {
+                printf("* ");
+            } else {
+                printf("%d ", j);
+            }
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
