@@ -1,0 +1,59 @@
+1	#include <stdio.h>
+     2	
+     3	int main(void) {
+     4	    int start;
+     5	    int end;
+     6	    int evenCount = 0;
+     7	    int oddCount = 0;
+     8	    long long evenSum = 0;
+     9	    long long oddSum = 0;
+    10	
+    11	    printf("=== Analiza e Numrave Cift dhe Tek ===\n");
+    12	
+    13	    printf("Shkruani vleren fillestare te intervalit: ");
+    14	    if (scanf("%d", &start) != 1) {
+    15	        printf("Input i pavlefshem per vleren fillestare.\n");
+    16	        return 1;
+    17	    }
+    18	
+    19	    printf("Shkruani vleren perfundimtare te intervalit: ");
+    20	    if (scanf("%d", &end) != 1) {
+    21	        printf("Input i pavlefshem per vleren perfundimtare.\n");
+    22	        return 1;
+    23	    }
+    24	
+    25	    if (start > end) {
+    26	        printf("Interval i pavlefshem: vlera fillestare duhet te jete me e vogel ose e barabarte me vleren perfundimtare.\n");
+    27	        return 1;
+    28	    }
+    29	
+    30	    for (int number = start; number <= end; number++) {
+    31	        if (number % 2 == 0) {
+    32	            evenCount++;
+    33	            evenSum += number;
+    34	        } else {
+    35	            oddCount++;
+    36	            oddSum += number;
+    37	        }
+    38	    }
+    39	
+    40	    int totalValues = end - start + 1;
+    41	
+    42	    printf("\n--- Rezultati i Analizes ---\n");
+    43	    printf("Intervali: [%d, %d]\n", start, end);
+    44	    printf("Totali i vlerave ne interval: %d\n", totalValues);
+    45	    printf("Numra cift: %d\n", evenCount);
+    46	    printf("Numra tek: %d\n", oddCount);
+    47	    printf("Shuma e numrave cift: %lld\n", evenSum);
+    48	    printf("Shuma e numrave tek: %lld\n", oddSum);
+    49	
+    50	    if (evenCount > oddCount) {
+    51	        printf("Kategori me me shume numra: CIFT\n");
+    52	    } else if (oddCount > evenCount) {
+    53	        printf("Kategori me me shume numra: TEK\n");
+    54	    } else {
+    55	        printf("Kategori me me shume numra: BARAZIM (cift = tek)\n");
+    56	    }
+    57	
+    58	    return 0;
+    59	}
