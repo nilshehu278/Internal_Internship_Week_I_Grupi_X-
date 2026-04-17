@@ -1,0 +1,251 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STUDENTS 5
+
+// ENUM
+typedef enum {
+    ACTIVE = 1,
+    INACTIVE = 2
+} Status;
+
+// STRUCT
+typedef struct {
+    int id;
+    char name[50];
+    float progress;
+    Status status;
+} Student;
+
+// ================= MENU =================
+void printMenu() {
+    printf("\n========== MENU ==========\n");
+    printf("1. Shto student\n");
+    printf("2. Shfaq studentet\n");
+    printf("3. Raport analitik\n");
+    printf("4. Perditeso student\n");
+    printf("5. Fshi student\n");
+    printf("6. Ranking\n");
+    printf("7. Dil\n");
+    printf("==========================\n");
+    printf("Zgjedh: ");
+}
+
+// ================= PRINT =================
+void printStudent(Student s) {
+    printf("ID: %d | Emri: %s | Progresi: %.2f | Statusi: %s\n",
+           s.id,
+           s.name,
+           s.progress,
+           s.status == ACTIVE ? "ACTIVE" : "INACTIVE");
+}
+
+// ================= STATUS =================
+Status chooseStatus() {
+    int option;
+
+    while (1) {
+        printf("1. ACTIVE\n2. INACTIVE\nZgjedh: ");
+        scanf("%d", &option);
+
+        switch (option) {
+            case 1: return ACTIVE;
+            case 2: return INACTIVE;
+            default: printf("Zgjedhje e pavlefshme!\n");
+        }
+    }
+}
+
+// ================= ADD =================
+void addStudent(Student *students, int *count) {
+    if (*count >= MAX_STUDENTS) {
+        printf("Kapaciteti eshte i mbushur!\n");
+        return;
+    }
+
+    Student s;
+
+    printf("ID: ");
+    scanf("%d", &s.id);
+
+    printf("Emri: ");
+    scanf(" %[^\n]", s.name);
+
+    printf("Progresi (0-100): ");
+    scanf("%f", &s.progress);
+
+    if (s.progress < 0 || s.progress > 100) {
+        printf("Progres i pavlefshem! Vendoset 0.\n");
+        s.progress = 0;
+    }
+
+    s.status = chooseStatus();
+
+    students[*count] = s;
+    (*count)++;
+
+    printf("Regjistrimi u shtua me sukses.\n");
+}
+
+// ================= SHOW =================
+void showStudents(Student *students, int count) {
+    if (count == 0) {
+        printf("Nuk ka regjistrime.\n");
+        return;
+    }
+
+    printf("\n========== LISTA ==========\n");
+    for (int i = 0; i < count; i++) {
+        printStudent(students[i]);
+    }
+}
+
+// ================= UPDATE =================
+void updateStudent(Student *students, int count) {
+    if (count == 0) {
+        printf("Nuk ka regjistrime.\n");
+        return;
+    }
+
+    int id;
+    printf("ID per perditesim: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < count; i++) {
+        if (students[i].id == id) {
+            Student *s = &students[i];
+
+            printf("Emri i ri: ");
+            scanf(" %[^\n]", s->name);
+
+            printf("Progres i ri: ");
+            scanf("%f", &s->progress);
+
+            if (s->progress < 0 || s->progress > 100)
+                s->progress = 0;
+
+            s->status = chooseStatus();
+
+            printf("U perditesua me sukses.\n");
+            return;
+        }
+    }
+
+    printf("Studenti nuk u gjet.\n");
+}
+
+// ================= DELETE =================
+void deleteStudent(Student *students, int *count) {
+    if (*count == 0) {
+        printf("Nuk ka regjistrime.\n");
+        return;
+    }
+
+    int id, index = -1;
+    printf("ID per fshirje: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < *count; i++) {
+        if (students[i].id == id) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1) {
+        printf("Studenti nuk u gjet.\n");
+        return;
+    }
+
+    for (int i = index; i < *count - 1; i++) {
+        students[i] = students[i + 1];
+    }
+
+    (*count)--;
+
+    printf("U fshi me sukses.\n");
+}
+
+// ================= REPORT =================
+void showReport(Student *students, int count) {
+    if (count == 0) {
+        printf("Nuk ka te dhena.\n");
+        return;
+    }
+
+    int active = 0, inactive = 0;
+    float sum = 0, max = students[0].progress, min = students[0].progress;
+
+    for (int i = 0; i < count; i++) {
+        if (students[i].status == ACTIVE) active++;
+        else inactive++;
+
+        sum += students[i].progress;
+
+        if (students[i].progress > max) max = students[i].progress;
+        if (students[i].progress < min) min = students[i].progress;
+    }
+
+    float avg = sum / count;
+
+    printf("\n===== RAPORT =====\n");
+    printf("Total: %d | ACTIVE: %d | INACTIVE: %d\n", count, active, inactive);
+    printf("Mesatarja: %.2f | Max: %.2f | Min: %.2f\n", avg, max, min);
+
+    if (avg >= 80)
+        printf("Performanca: Shkelqyeshme\n");
+    else if (avg >= 50)
+        printf("Performanca: Mesatare\n");
+    else
+        printf("Performanca: E ulet\n");
+}
+
+// ================= SORT =================
+void sortStudentsByProgress(Student *students, int count) {
+    if (count == 0) {
+        printf("Nuk ka te dhena.\n");
+        return;
+    }
+
+    Student temp[MAX_STUDENTS];
+
+    for (int i = 0; i < count; i++)
+        temp[i] = students[i];
+
+    for (int i = 0; i < count - 1; i++) {
+        for (int j = 0; j < count - i - 1; j++) {
+            if (temp[j].progress < temp[j + 1].progress) {
+                Student t = temp[j];
+                temp[j] = temp[j + 1];
+                temp[j + 1] = t;
+            }
+        }
+    }
+
+    printf("\n===== RANKING =====\n");
+    for (int i = 0; i < count; i++) {
+        printf("%d. %s - %.2f\n", i + 1, temp[i].name, temp[i].progress);
+    }
+}
+
+// ================= MAIN =================
+int main() {
+    Student students[MAX_STUDENTS];
+    int count = 0, choice;
+
+    while (1) {
+        printMenu();
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: addStudent(students, &count); break;
+            case 2: showStudents(students, count); break;
+            case 3: showReport(students, count); break;
+            case 4: updateStudent(students, count); break;
+            case 5: deleteStudent(students, &count); break;
+            case 6: sortStudentsByProgress(students, count); break;
+            case 7: return 0;
+            default: printf("Zgjedhje e pavlefshme!\n");
+        }
+    }
+}
