@@ -1,0 +1,205 @@
+#include <stdio.h>
+
+int main(void) {
+#define MAX_REGJISTRIME 5
+
+typedef struct {
+    int age;
+    char initial;
+    double preliminaryPoints;
+    int workshopOption;
+    int minAge = 14;
+    int maxAge = 19;
+    const char *readiness;
+    const char *workshopName;
+    const char *ageStatus;
+} Registration;
+
+    printf("=== Regjistrim i Thjeshte ne Punetori ===\n\n");
+const char *getReadiness(double points) {
+    if (points < 0.0 || points > 100.0) {
+        return "pike te pavlefshme";
+    }
+    if (points < 50.0) {
+        return "nevojitet me shume ushtrim";
+    }
+    if (points < 80.0) {
+        return "gati per vazhdim";
+    }
+    return "gati per sfide";
+}
+
+const char *getWorkshopName(int option) {
+    switch (option) {
+        case 1:
+            return "Programim Bazik";
+        case 2:
+            return "Algoritme dhe Logjike";
+        case 3:
+            return "Projekte Praktike";
+        default:
+            return "Opsion i pavlefshem";
+    }
+}
+
+const char *getAgeStatus(int age) {
+    const int minAge = 14;
+    const int maxAge = 19;
+
+    if (age >= minAge && age <= maxAge) {
+        return "Brenda kufirit te pjesemarrjes (14-19).";
+    }
+    return "Jashte kufirit te pjesemarrjes (14-19).";
+}
+
+int addRegistration(Registration *record) {
+    printf("Shkruaj moshen (int): ");
+    if (scanf("%d", &age) != 1) {
+    if (scanf("%d", &record->age) != 1) {
+        printf("Input i pavlefshem per moshen.\n");
+        return 1;
+        return 0;
+    }
+
+    printf("Shkruaj inicialin (char): ");
+    if (scanf(" %c", &initial) != 1) {
+    if (scanf(" %c", &record->initial) != 1) {
+        printf("Input i pavlefshem per inicialin.\n");
+        return 1;
+        return 0;
+    }
+
+    printf("Shkruaj piket paraprake (double): ");
+    if (scanf("%lf", &preliminaryPoints) != 1) {
+    if (scanf("%lf", &record->preliminaryPoints) != 1) {
+        printf("Input i pavlefshem per piket.\n");
+        return 1;
+        return 0;
+    }
+
+    printf("Zgjidh punetorine (1, 2 ose 3): ");
+    if (scanf("%d", &workshopOption) != 1) {
+    if (scanf("%d", &record->workshopOption) != 1) {
+        printf("Input i pavlefshem per opsionin e punetorise.\n");
+        return 1;
+        return 0;
+    }
+
+    if (preliminaryPoints < 0.0 || preliminaryPoints > 100.0) {
+        readiness = "pike te pavlefshme";
+    } else if (preliminaryPoints < 50.0) {
+        readiness = "nevojitet me shume ushtrim";
+    } else if (preliminaryPoints < 80.0) {
+        readiness = "gati per vazhdim";
+    } else {
+        readiness = "gati per sfide";
+    record->readiness = getReadiness(record->preliminaryPoints);
+    record->workshopName = getWorkshopName(record->workshopOption);
+    record->ageStatus = getAgeStatus(record->age);
+
+    return 1;
+}
+
+void listRegistrations(const Registration registrations[], int count) {
+    if (count == 0) {
+        printf("\nNuk ka regjistrime te ruajtura ende.\n");
+        return;
+    }
+
+    switch (workshopOption) {
+        case 1:
+            workshopName = "Programim Bazik";
+            break;
+        case 2:
+            workshopName = "Algoritme dhe Logjike";
+            break;
+        case 3:
+            workshopName = "Projekte Praktike";
+            break;
+        default:
+            workshopName = "Opsion i pavlefshem";
+            break;
+    printf("\n=== Lista e te Gjitha Regjistrimeve (%d) ===\n", count);
+    for (int i = 0; i < count; i++) {
+        printf("\nRegjistrimi #%d\n", i + 1);
+        printf("Mosha: %d\n", registrations[i].age);
+        printf("Iniciali: %c\n", registrations[i].initial);
+        printf("Piket paraprake: %.2lf\n", registrations[i].preliminaryPoints);
+        printf("Opsioni i punetorise: %d\n", registrations[i].workshopOption);
+        printf("Punetoria e zgjedhur: %s\n", registrations[i].workshopName);
+        printf("Klasifikimi: %s\n", registrations[i].readiness);
+        printf("Statusi i moshes: %s\n", registrations[i].ageStatus);
+    }
+}
+
+    printf("\n--- Permbledhja e Regjistrimit ---\n");
+    printf("Mosha: %d\n", age);
+    printf("Iniciali: %c\n", initial);
+    printf("Piket paraprake: %.2lf\n", preliminaryPoints);
+    printf("Opsioni i punetorise: %d\n", workshopOption);
+    printf("Punetoria e zgjedhur: %s\n", workshopName);
+    printf("Klasifikimi: %s\n", readiness);
+int main(void) {
+    Registration registrations[MAX_REGJISTRIME];
+    int registrationCount = 0;
+    int option;
+
+    if (age >= minAge && age <= maxAge) {
+        printf("Statusi i moshes: Brenda kufirit per pjesemarrje (%d-%d).\n", minAge, maxAge);
+    } else {
+        printf("Statusi i moshes: Jashte kufirit te pjesemarrjes (%d-%d).\n", minAge, maxAge);
+    }
+    printf("=== Regjistrim i Thjeshte ne Punetori (Multi-Regjistrime) ===\n");
+
+    do {
+        printf("\n----- MENU -----\n");
+        printf("1. Shto regjistrim te ri\n");
+        printf("2. Shfaq te gjitha regjistrimet\n");
+        printf("3. Shfaq kapacitetin\n");
+        printf("0. Dil\n");
+        printf("Zgjidh nje opsion: ");
+
+        if (scanf("%d", &option) != 1) {
+            printf("Input i pavlefshem ne menu. Programi po mbyllet.\n");
+            return 1;
+        }
+
+        switch (option) {
+            case 1:
+                if (registrationCount >= MAX_REGJISTRIME) {
+                    printf("Nuk mund te shtohet regjistrim i ri: u arrit maksimumi (%d).\n", MAX_REGJISTRIME);
+                    break;
+                }
+
+                printf("\n--- Shtimi i Regjistrimit #%d ---\n", registrationCount + 1);
+                if (addRegistration(&registrations[registrationCount])) {
+                    registrationCount++;
+                    printf("Regjistrimi u ruajt me sukses.\n");
+                } else {
+                    printf("Regjistrimi nuk u ruajt per shkak te input-it te pavlefshem.\n");
+                }
+                break;
+
+            case 2:
+                listRegistrations(registrations, registrationCount);
+                break;
+
+            case 3:
+                printf("Regjistrime aktuale: %d\n", registrationCount);
+                printf("Kapacitet maksimal: %d\n", MAX_REGJISTRIME);
+                printf("Hapesire e lire: %d\n", MAX_REGJISTRIME - registrationCount);
+                break;
+
+            case 0:
+                printf("Programi u mbyll.\n");
+                break;
+
+            default:
+                printf("Opsion i pavlefshem. Provoni perseri.\n");
+                break;
+        }
+
+    } while (option != 0);
+
+    return 0;
+}
