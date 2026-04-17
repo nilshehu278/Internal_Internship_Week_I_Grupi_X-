@@ -1,0 +1,194 @@
+import java.util.Scanner;
+
+enum Status {
+    FAIL,
+    PASS,
+    EXCELLENT
+}
+
+class StudentProgress {
+    String name;
+    int score;
+    Status status;
+
+    public StudentProgress(String name, int score, Status status) {
+        this.name = name;
+        this.score = score;
+        this.status = status;
+    }
+
+    public void display() {
+        System.out.println("Emri: " + name +
+                " | Piket: " + score +
+                " | Statusi: " + status);
+    }
+}
+
+public class Main {
+
+    // METODA PËR RAPORT ANALITIK
+    public static void generateReport(StudentProgress[] records, int count) {
+
+        if (count == 0) {
+            System.out.println("Nuk ka te dhena per raport!");
+            return;
+        }
+
+        int totalScore = 0;
+        int maxScore = records[0].score;
+        int minScore = records[0].score;
+
+        int passCount = 0;
+        int failCount = 0;
+        int excellentCount = 0;
+
+        // FOR LOOP për analizë
+        for (int i = 0; i < count; i++) {
+            int score = records[i].score;
+            totalScore += score;
+
+            if (score > maxScore) maxScore = score;
+            if (score < minScore) minScore = score;
+
+            // IF/ELSE për klasifikim
+            if (records[i].status == Status.FAIL) {
+                failCount++;
+            } else if (records[i].status == Status.PASS) {
+                passCount++;
+            } else {
+                excellentCount++;
+            }
+        }
+
+        double average = (double) totalScore / count;
+
+        // RAPORTI
+        System.out.println("\n===== RAPORT ANALITIK =====");
+        System.out.println("Totali i regjistrimeve: " + count);
+        System.out.println("Mesatarja e pikëve: " + average);
+        System.out.println("Piket maksimale: " + maxScore);
+        System.out.println("Piket minimale: " + minScore);
+
+        System.out.println("\nStatuset:");
+        System.out.println("FAIL: " + failCount);
+        System.out.println("PASS: " + passCount);
+        System.out.println("EXCELLENT: " + excellentCount);
+
+        // MESAZH INTERPRETUES (IF/ELSE)
+        if (average < 50) {
+            System.out.println("\n📉 Performanca eshte e ulet.");
+        } else if (average < 75) {
+            System.out.println("\n📊 Performanca eshte mesatare.");
+        } else {
+            System.out.println("\n📈 Performanca eshte shume e mire!");
+        }
+
+        System.out.println("===========================\n");
+    }
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        final int MAX = 5;
+        StudentProgress[] records = new StudentProgress[MAX];
+        int count = 0;
+
+        int choice;
+
+        do {
+            System.out.println("\n--- MENU ---");
+            System.out.println("1. Shto regjistrim");
+            System.out.println("2. Shfaq regjistrimet");
+            System.out.println("3. Raport analitik");
+            System.out.println("4. Dil");
+            System.out.print("Zgjedhja: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println(" Vendos numer valid!");
+                scanner.next();
+                continue;
+            }
+
+            choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
+                case 1:
+                    if (count >= MAX) {
+                        System.out.println("Arrite maksimumin!");
+                        break;
+                    }
+
+                    System.out.print("Emri: ");
+                    String name = scanner.nextLine();
+
+                    int score;
+                    while (true) {
+                        System.out.print("Piket (0-100): ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Numer jo valid!");
+                            scanner.next();
+                            continue;
+                        }
+
+                        score = scanner.nextInt();
+
+                        if (score < 0 || score > 100) {
+                            System.out.println("Duhet 0-100!");
+                        } else break;
+                    }
+
+                    Status status = null;
+
+                    while (status == null) {
+                        System.out.println("1.FAIL  2.PASS  3.EXCELLENT");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Zgjedhje jo valide!");
+                            scanner.next();
+                            continue;
+                        }
+
+                        int s = scanner.nextInt();
+
+                        switch (s) {
+                            case 1: status = Status.FAIL; break;
+                            case 2: status = Status.PASS; break;
+                            case 3: status = Status.EXCELLENT; break;
+                            default: System.out.println(" Gabim!");
+                        }
+                    }
+
+                    records[count++] = new StudentProgress(name, score, status);
+                    System.out.println("U shtua!");
+                    break;
+
+                case 2:
+                    if (count == 0) {
+                        System.out.println("Nuk ka te dhena!");
+                    } else {
+                        for (int i = 0; i < count; i++) {
+                            System.out.print((i + 1) + ". ");
+                            records[i].display();
+                        }
+                    }
+                    break;
+
+                case 3:
+                    generateReport(records, count);
+                    break;
+
+                case 4:
+                    System.out.println("Dalje...");
+                    return;
+
+                default:
+                    System.out.println(" Zgjedhje e gabuar!");
+            }
+
+        } while (true);
+    }
+}
