@@ -11,44 +11,69 @@ int main() {
     printf("Shkruaj nje numer (float): ");
     scanf("%f", &b);
 
-    // Pointera
+    // Pointerat
     int *pA = &a;
     float *pB = &b;
 
-    // Shfaqje fillestare
-    printf("\n--- Para ndryshimit ---\n");
-    printf("Vlera e a: %d\n", a);
-    printf("Adresa e a: %p\n", &a);
-    printf("Vlera e a permes pointer-it: %d\n", *pA);
-
-    printf("\nVlera e b: %.2f\n", b);
-    printf("Adresa e b: %p\n", &b);
-    printf("Vlera e b permes pointer-it: %.2f\n", *pB);
-
-    // Ruaj vleren fillestare
+    // Ruaj vlerat fillestare
     int oldA = a;
+    float oldB = b;
 
-    // Ndryshim përmes pointer-it
-    *pA = *pA + 10;
+    // =========================
+    // PARA NDRYSHIMIT
+    // =========================
+    printf("\n--- PARA NDRYSHIMIT ---\n");
 
-    printf("\n--- Pas ndryshimit ---\n");
-    printf("Vlera e re e a: %d\n", a);
+    printf("a (direkt): %d\n", a);
+    printf("Adresa e a: %p\n", (void*)&a);
+    printf("a permes pointer-it: %d\n", *pA);
 
-    // Kontroll me if/else
-    printf("\n--- Analiza ---\n");
+    printf("\nb (direkt): %.2f\n", b);
+    printf("Adresa e b: %p\n", (void*)&b);
+    printf("b permes pointer-it: %.2f\n", *pB);
+
+    // =========================
+    // NDRYSHIMI ME POINTER
+    // =========================
+    *pA = *pA + 10;     // rrit int
+    *pB = *pB * 2;      // dyfishon float
+
+    // =========================
+    // PAS NDRYSHIMIT
+    // =========================
+    printf("\n--- PAS NDRYSHIMIT ---\n");
+
+    printf("a (i ri): %d\n", a);
+    printf("b (i ri): %.2f\n", b);
+
+    // =========================
+    // ANALIZA
+    // =========================
+    printf("\n--- ANALIZA ---\n");
+
+    // për a
     if (a > oldA) {
-        printf("Vlera eshte rritur.\n");
+        printf("a eshte rritur.\n");
     } else if (a < oldA) {
-        printf("Vlera eshte zvogeluar.\n");
+        printf("a eshte zvogeluar.\n");
     } else {
-        printf("Vlera ka mbetur e njejte.\n");
+        printf("a ka mbetur e njejte.\n");
     }
 
-    // Kontroll intervali
-    if (a >= 0 && a <= 50) {
-        printf("Vlera perfundimtare eshte ne intervalin [0, 50].\n");
+    // për b
+    if (b > oldB) {
+        printf("b eshte rritur.\n");
+    } else if (b < oldB) {
+        printf("b eshte zvogeluar.\n");
     } else {
-        printf("Vlera perfundimtare eshte jashte intervalit [0, 50].\n");
+        printf("b ka mbetur e njejte.\n");
+    }
+
+    // kontroll intervali për a
+    if (a >= 0 && a <= 50) {
+        printf("a eshte ne intervalin [0, 50].\n");
+    } else {
+        printf("a eshte jashte intervalit [0, 50].\n");
     }
 
     return 0;
