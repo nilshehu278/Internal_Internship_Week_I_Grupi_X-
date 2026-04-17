@@ -1,0 +1,82 @@
+void searchStudent(Student *students, int count) {
+    if (count == 0) {
+        printf("Nuk ka regjistrime.\n");
+        return;
+    }
+
+    int choice;
+    printf("\nKerko sipas:\n");
+    printf("1. ID\n");
+    printf("2. Emrit\n");
+    printf("Zgjedh: ");
+    scanf("%d", &choice);
+
+    int found = 0;
+
+    if (choice == 1) {
+        int id;
+        printf("Sheno ID: ");
+        scanf("%d", &id);
+
+        for (int i = 0; i < count; i++) {
+            if (students[i].id == id) {
+
+                printf("\n=== REZULTATI ===\n");
+                printStudent(students[i]);
+
+                // LOGJIKA PARALAJMERUESE
+                if (students[i].progress < 50 && students[i].status == INACTIVE)
+                    printf("⚠️ Paralajmerim: Progres i ulet dhe status jo aktiv!\n");
+
+                else if (students[i].progress < 50)
+                    printf("⚠️ Kujdes: Progres i ulet.\n");
+
+                else if (students[i].progress >= 80 && students[i].status == ACTIVE)
+                    printf("✅ Shkelqyeshem: Performancë shumë e mirë!\n");
+
+                else
+                    printf("ℹ️ Gjendje normale.\n");
+
+                found = 1;
+            }
+        }
+    }
+
+    else if (choice == 2) {
+        char name[50];
+        printf("Sheno emrin: ");
+        scanf(" %[^\n]", name);
+
+        for (int i = 0; i < count; i++) {
+            if (strcmp(students[i].name, name) == 0) {
+
+                printf("\n=== REZULTATI ===\n");
+                printStudent(students[i]);
+
+                // LOGJIKA PARALAJMERUESE
+                if (students[i].progress < 50 && students[i].status == INACTIVE)
+                    printf("⚠️ Paralajmerim: Progres i ulet dhe status jo aktiv!\n");
+
+                else if (students[i].progress < 50)
+                    printf("⚠️ Kujdes: Progres i ulet.\n");
+
+                else if (students[i].progress >= 80 && students[i].status == ACTIVE)
+                    printf("✅ Shkelqyeshem: Performancë shumë e mirë!\n");
+
+                else
+                    printf("ℹ️ Gjendje normale.\n");
+
+                found = 1;
+            }
+        }
+    }
+
+    else {
+        printf("Zgjedhje e pavlefshme!\n");
+        return;
+    }
+
+    if (!found) {
+        printf("Asnje rezultat nuk u gjet.\n");
+    }
+}
