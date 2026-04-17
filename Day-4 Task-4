@@ -1,0 +1,35 @@
+void updateStudent(Student *students, int count) {
+    if (count == 0) {
+        printf("Nuk ka studente per te perditesuar.\n");
+        return;
+    }
+
+    int id;
+    printf("Sheno ID e studentit per perditesim: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < count; i++) {
+        if (students[i].id == id) {
+
+            Student *s = &students[i];  // pointer te studenti
+
+            printf("Studenti u gjet: %s\n", s->name);
+
+            printf("Progres i ri (0-100): ");
+            scanf("%f", &s->progress);
+
+            if (s->progress < 0 || s->progress > 100) {
+                printf("Progres i pavlefshem! Vendoset 0.\n");
+                s->progress = 0;
+            }
+
+            // ndryshim statusi
+            s->status = chooseStatus();
+
+            printf("Te dhenat u perditesuan me sukses!\n");
+            return;
+        }
+    }
+
+    printf("Studenti me kete ID nuk u gjet.\n");
+}
