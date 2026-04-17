@@ -45,7 +45,7 @@ public class Main {
             System.out.print("Zgjedhja: ");
 
             if (!scanner.hasNextInt()) {
-                System.out.println("❌ Ju lutem vendosni nje numer!");
+                System.out.println("Ju lutem vendosni nje numer!");
                 scanner.next(); // pastron input
                 continue;
             }
@@ -57,7 +57,7 @@ public class Main {
 
                 case 1:
                     if (count >= MAX) {
-                        System.out.println("⚠️ Arrite maksimumin e regjistrimeve!");
+                        System.out.println(" Arrite maksimumin e regjistrimeve!");
                         break;
                     }
 
@@ -69,7 +69,7 @@ public class Main {
                         System.out.print("Shkruaj piket (0-100): ");
 
                         if (!scanner.hasNextInt()) {
-                            System.out.println("❌ Vendos numer valid!");
+                            System.out.println("Vendos numer valid!");
                             scanner.next();
                             continue;
                         }
@@ -77,7 +77,7 @@ public class Main {
                         score = scanner.nextInt();
 
                         if (score < 0 || score > 100) {
-                            System.out.println("❌ Piket duhet 0-100!");
+                            System.out.println("Piket duhet 0-100!");
                         } else {
                             break;
                         }
@@ -94,7 +94,7 @@ public class Main {
                         System.out.print("Zgjedhja: ");
 
                         if (!scanner.hasNextInt()) {
-                            System.out.println("❌ Zgjedhje e pavlefshme!");
+                            System.out.println(" Zgjedhje e pavlefshme!");
                             scanner.next();
                             continue;
                         }
@@ -112,19 +112,19 @@ public class Main {
                                 status = Status.EXCELLENT;
                                 break;
                             default:
-                                System.out.println("❌ Zgjedhje e pavlefshme! Provo perseri.");
+                                System.out.println(" Zgjedhje e pavlefshme! Provo perseri.");
                         }
                     }
 
                     records[count] = new StudentProgress(name, score, status);
                     count++;
 
-                    System.out.println("✅ Regjistrimi u shtua!");
+                    System.out.println("Regjistrimi u shtua!");
                     break;
 
                 case 2:
                     if (count == 0) {
-                        System.out.println("⚠️ Nuk ka regjistrime!");
+                        System.out.println(" Nuk ka regjistrime!");
                     } else {
                         System.out.println("\n--- REGJISTRIMET ---");
                         for (int i = 0; i < count; i++) {
@@ -139,7 +139,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("❌ Zgjedhje e pavlefshme!");
+                    System.out.println(" Zgjedhje e pavlefshme!");
             }
 
         } while (true);
