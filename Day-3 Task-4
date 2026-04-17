@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+int main() {
+    int a;
+    float b;
+
+    int *pA;
+    float *pB;
+
+    // Leximi i vlerave
+    printf("Jep nje vlere int: ");
+    scanf("%d", &a);
+
+    printf("Jep nje vlere float: ");
+    scanf("%f", &b);
+
+    // Lidhja e pointerave me adresat
+    pA = &a;
+    pB = &b;
+
+    // Shfaqja e vlerave dhe adresave
+    printf("\n--- Vlerat fillestare ---\n");
+    printf("a (direkt) = %d\n", a);
+    printf("Adresa e a = %p\n", &a);
+    printf("Vlera e a permes pointerit = %d\n", *pA);
+
+    printf("\nb (direkt) = %.2f\n", b);
+    printf("Adresa e b = %p\n", &b);
+    printf("Vlera e b permes pointerit = %.2f\n", *pB);
+
+    // Ruajmë vlerat para ndryshimit
+    int a_old = a;
+    float b_old = b;
+
+    // Ndryshimi përmes pointer-it
+    *pA = *pA + 10;
+    *pB = *pB * 2;
+
+    // Shfaqja pas ndryshimit
+    printf("\n--- Pas ndryshimit (me pointer) ---\n");
+    printf("a (para) = %d, a (pas) = %d\n", a_old, a);
+    printf("b (para) = %.2f, b (pas) = %.2f\n", b_old, b);
+
+    // Kontrolli me if/else për a
+    printf("\n--- Analiza per a ---\n");
+    if(a > a_old) {
+        printf("Vlera e a eshte rritur.\n");
+    } else if(a < a_old) {
+        printf("Vlera e a eshte zvogeluar.\n");
+    } else {
+        printf("Vlera e a ka mbetur e njejte.\n");
+    }
+
+    // Kontrolli me interval për b
+    printf("\n--- Analiza per b ---\n");
+    if(b < 0) {
+        printf("b eshte negative.\n");
+    } else if(b >= 0 && b <= 10) {
+        printf("b eshte ne intervalin [0, 10].\n");
+    } else {
+        printf("b eshte me e madhe se 10.\n");
+    }
+
+    return 0;
+}
