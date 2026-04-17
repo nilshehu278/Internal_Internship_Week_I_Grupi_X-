@@ -5,7 +5,7 @@
 #define MAX_STUDENTS 10
 #define NAME_LENGTH 50
 
-/* ---------------- Data model (Final Version) ---------------- */
+/* ---------------- Data model (Version 7) ---------------- */
 typedef enum {
     STATUS_NOT_STARTED,
     STATUS_IN_PROGRESS,
@@ -124,7 +124,6 @@ int containsIgnoreCase(const char *text, const char *pattern) {
     return 0;
 }
 
-/* Advice is interpretation, not stored data */
 const char *getRecommendation(const Student *student) {
     if (student->progress < 40 && student->status == STATUS_NOT_STARTED) {
         return "Warning: low progress and inactive status. Needs immediate attention.";
@@ -136,6 +135,11 @@ const char *getRecommendation(const Student *student) {
         return "Needs attention: weak or missing progress.";
     }
     return "Stable progress: continue consistent effort.";
+}
+
+void printTableHeader(void) {
+    printf("%-4s %-6s %-20s %-10s %-15s\n", "No.", "ID", "Name", "Progress", "Status");
+    printf("--------------------------------------------------------------\n");
 }
 
 void printStudentLine(const Student *student, int rowNo) {
@@ -155,12 +159,7 @@ void printStudentWithRecommendation(const Student *student, int rowNo) {
     printf("     Advice: %s\n", getRecommendation(student));
 }
 
-void printTableHeader(void) {
-    printf("%-4s %-6s %-20s %-10s %-15s\n", "No.", "ID", "Name", "Progress", "Status");
-    printf("--------------------------------------------------------------\n");
-}
-
-/* ---------------- Core features ---------------- */
+/* ---------------- Core add/show/update ---------------- */
 int addOneStudent(StudentStore *store) {
     if (isFull(store)) {
         printf("Cannot add more students. Array is full (%d/%d).\n", store->count, store->capacity);
@@ -182,7 +181,6 @@ int addOneStudent(StudentStore *store) {
     }
 
     clearInputBuffer();
-
     if (!readLine("Enter Name: ", current->name, NAME_LENGTH)) {
         printf("Invalid name input.\n");
         return 0;
@@ -228,6 +226,20 @@ void addStudentsLoop(StudentStore *store) {
             printf("Invalid input. Returning to main menu.\n");
             break;
         }
+    }
+}
+
+void showAllStudents(const StudentStore *store) {
+    printf("\n--- All Students (%d/%d) ---\n", store->count, store->capacity);
+
+    if (store->count == 0) {
+        printf("No students saved yet.\n");
+        return;
+    }
+
+    printTableHeader();
+    for (int i = 0; i < store->count; i++) {
+        printStudentLine(&store->records[i], i + 1);
     }
 }
 
@@ -281,21 +293,163 @@ void updateStudentProgressMenu(StudentStore *store) {
            statusToText(target->status));
 }
 
-void showAllStudents(const StudentStore *store) {
-    printf("\n--- All Students (%d/%d) ---\n", store->count, store->capacity);
+/* ---------------- Version 7: edit and delete ---------------- */
+void editStudentMenu(StudentStore *store) {
+    int id;
 
     if (store->count == 0) {
-        printf("No students saved yet.\n");
+        printf("No students available to edit.\n");
         return;
     }
 
-    printTableHeader();
-    for (int i = 0; i < store->count; i++) {
-        printStudentLine(&store->records[i], i + 1);
+    printf("\n--- Edit Student ---\n");
+    if (!readInt("Enter student ID to edit: ", &id)) {
+        printf("Invalid ID input.\n");
+        return;
+    }
+
+    int index = findStudentIndexById(store, id);
+    if (index == -1) {
+        printf("Student with ID %d not found.\n", id);
+        return;
+    }
+
+    Student *target = &store->records[index];
+    int choice = -1;
+
+    while (choice != 0) {
+        printf("\nEditing student -> ID: %d, Name: %s, Progress: %d%%, Status: %s\n",
+               target->id, target->name, target->progress, statusToText(target->status));
+        printf("1. Change name\n");
+        printf("2. Change progress\n");
+        printf("3. Change status manually\n");
+        printf("0. Done editing\n");
+        printf("Choose edit option: ");
+
+        if (!readInt("", &choice)) {
+            printf("Invalid edit option.\n");
+            continue;
+        }
+
+        switch (choice) {
+            case 1: {
+                clearInputBuffer();
+                char newName[NAME_LENGTH];
+                if (!readLine("Enter new name: ", newName, NAME_LENGTH)) {
+                    printf("Invalid name input.\n");
+                    break;
+                }
+                if (newName[0] == '\0') {
+                    printf("Name cannot be empty.\n");
+                    break;
+                }
+                strcpy(target->name, newName);
+                printf("Name updated successfully.\n");
+                break;
+            }
+            case 2: {
+                int newProgress;
+                if (!readInt("Enter new progress (0-100): ", &newProgress)) {
+                    printf("Invalid progress input.\n");
+                    break;
+                }
+                if (newProgress < 0 || newProgress > 100) {
+                    printf("Progress must be between 0 and 100.\n");
+                    break;
+                }
+                target->progress = newProgress;
+                target->status = statusFromProgress(newProgress);
+                printf("Progress updated and status auto-adjusted.\n");
+                break;
+            }
+            case 3: {
+                int statusOption;
+                printf("Choose status: 0=Not Started, 1=In Progress, 2=Completed: ");
+                if (!readInt("", &statusOption)) {
+                    printf("Invalid status input.\n");
+                    break;
+                }
+                if (statusOption < 0 || statusOption > 2) {
+                    printf("Status must be 0, 1, or 2.\n");
+                    break;
+                }
+                target->status = (StudentStatus)statusOption;
+                printf("Status updated manually.\n");
+                break;
+            }
+            case 0:
+                printf("Finished editing.\n");
+                break;
+            default:
+                printf("Please choose 0, 1, 2, or 3.\n");
+        }
     }
 }
 
-/* ---------------- Search features ---------------- */
+void deleteAtIndex(StudentStore *store, int index) {
+    for (int i = index; i < store->count - 1; i++) {
+        store->records[i] = store->records[i + 1];
+    }
+    store->count--;
+}
+
+void deleteStudentMenu(StudentStore *store) {
+    int choice;
+
+    if (store->count == 0) {
+        printf("No students available to delete.\n");
+        return;
+    }
+
+    printf("\n--- Delete Student ---\n");
+    printf("1. Delete by student ID\n");
+    printf("2. Delete by exact array index (0-based)\n");
+    printf("Choose delete option: ");
+
+    if (!readInt("", &choice)) {
+        printf("Invalid delete option.\n");
+        return;
+    }
+
+    if (choice == 1) {
+        int id;
+        if (!readInt("Enter student ID to delete: ", &id)) {
+            printf("Invalid ID input.\n");
+            return;
+        }
+
+        int index = findStudentIndexById(store, id);
+        if (index == -1) {
+            printf("Student with ID %d not found.\n", id);
+            return;
+        }
+
+        deleteAtIndex(store, index);
+        printf("Student with ID %d deleted successfully. Count is now %d.\n", id, store->count);
+    } else if (choice == 2) {
+        int index;
+        if (!readInt("Enter exact array index to delete (0-based): ", &index)) {
+            printf("Invalid index input.\n");
+            return;
+        }
+
+        if (index < 0 || index >= store->count) {
+            printf("Index out of range. Valid range: 0 to %d.\n", store->count - 1);
+            return;
+        }
+
+        int deletedId = store->records[index].id;
+        deleteAtIndex(store, index);
+        printf("Student at index %d (ID %d) deleted successfully. Count is now %d.\n",
+               index,
+               deletedId,
+               store->count);
+    } else {
+        printf("Please choose 1 or 2.\n");
+    }
+}
+
+/* ---------------- Search ---------------- */
 void searchById(const StudentStore *store) {
     int id;
 
@@ -375,9 +529,8 @@ void searchStudentsMenu(const StudentStore *store) {
     }
 }
 
-/* ---------------- Ranking/sorting (Final) ---------------- */
+/* ---------------- Ranking ---------------- */
 int shouldSwapForRanking(const Student *left, const Student *right) {
-    /* 1) Higher progress first */
     if (left->progress < right->progress) {
         return 1;
     }
@@ -385,7 +538,6 @@ int shouldSwapForRanking(const Student *left, const Student *right) {
         return 0;
     }
 
-    /* 2) If same progress, higher status first (Completed > In Progress > Not Started) */
     if (left->status < right->status) {
         return 1;
     }
@@ -393,7 +545,6 @@ int shouldSwapForRanking(const Student *left, const Student *right) {
         return 0;
     }
 
-    /* 3) If still same, alphabetical name */
     return strcmp(left->name, right->name) > 0;
 }
 
@@ -428,12 +579,14 @@ void showRankingByProgress(const StudentStore *store) {
 
 /* ---------------- Main menu ---------------- */
 void printMenu(void) {
-    printf("\n==== Student Progress Tracker (Final Version) ====\n");
+    printf("\n==== Student Progress Tracker (Version 7) ====\n");
     printf("1. Add students\n");
     printf("2. Show all students\n");
     printf("3. Update student progress (pointer)\n");
     printf("4. Search students + advice\n");
     printf("5. Show ranking (highest progress first)\n");
+    printf("6. Edit student data\n");
+    printf("7. Delete student\n");
     printf("0. Exit\n");
     printf("Choose an option: ");
 }
@@ -443,7 +596,7 @@ int main(void) {
     int choice;
 
     initStore(&store);
-    printf("Welcome to Student Progress Tracker - Final Version!\n");
+    printf("Welcome to Student Progress Tracker - Version 7!\n");
 
     while (1) {
         printMenu();
@@ -469,11 +622,17 @@ int main(void) {
             case 5:
                 showRankingByProgress(&store);
                 break;
+            case 6:
+                editStudentMenu(&store);
+                break;
+            case 7:
+                deleteStudentMenu(&store);
+                break;
             case 0:
                 printf("Goodbye!\n");
                 return 0;
             default:
-                printf("Please choose 0, 1, 2, 3, 4, or 5.\n");
+                printf("Please choose 0, 1, 2, 3, 4, 5, 6, or 7.\n");
         }
     }
 }
