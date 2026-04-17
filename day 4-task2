@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+// ENUM për statusin e regjistrimit
+typedef enum {
+    NE_PROCES,
+    PERFUNDUAR,
+    NE_PRESJE
+} Status;
+
+// Strukturë e regjistrimit
+typedef struct {
+    char emri[50];
+    int progres;
+    Status status;
+} Regjistrim;
+
+void shfaqStatus(Status s) {
+    switch (s) {
+        case NE_PROCES:
+            printf("Ne proces");
+            break;
+        case PERFUNDUAR:
+            printf("Perfunduar");
+            break;
+        case NE_PRESJE:
+            printf("Ne pritje");
+            break;
+        default:
+            printf("I panjohur");
+    }
+}
+
+Status zgjedhStatus() {
+    int zg;
+
+    while (1) {
+        printf("\nZgjidh statusin:\n");
+        printf("0 - Ne proces\n");
+        printf("1 - Perfunduar\n");
+        printf("2 - Ne pritje\n");
+        printf("Zgjedhja: ");
+
+        if (scanf("%d", &zg) != 1) {
+            printf("Input i pavlefshem! Provo perseri.\n");
+            while (getchar() != '\n'); // pastrim buffer
+            continue;
+        }
+
+        switch (zg) {
+            case 0: return NE_PROCES;
+            case 1: return PERFUNDUAR;
+            case 2: return NE_PRESJE;
+            default:
+                printf("Zgjedhje e pavlefshme! Provo perseri.\n");
+        }
+    }
+}
+
+int main() {
+    Regjistrim lista[MAX];
+    int count = 0;
+    int zgjedhja;
+
+    while (1) {
+        printf("\n--- MENU ---\n");
+        printf("1. Shto regjistrim\n");
+        printf("2. Shfaq regjistrimet\n");
+        printf("3. Dil\n");
+        printf("Zgjedhja: ");
+
+        if (scanf("%d", &zgjedhja) != 1) {
+            printf("Input i pavlefshem! Provo perseri.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (zgjedhja) {
+
+            case 1:
+                if (count >= MAX) {
+                    printf("Kapaciteti eshte i mbushur!\n");
+                    break;
+                }
+
+                printf("Sheno emrin: ");
+                scanf(" %[^\n]", lista[count].emri);
+
+                printf("Sheno progresin (0-100): ");
+                scanf("%d", &lista[count].progres);
+
+                lista[count].status = zgjedhStatus();
+
+                count++;
+                printf("Regjistrimi u shtua me sukses!\n");
+                break;
+
+            case 2:
+                if (count == 0) {
+                    printf("Nuk ka regjistrime.\n");
+                    break;
+                }
+
+                printf("\n--- LISTA E REGJISTRIMEVE ---\n");
+
+                for (int i = 0; i < count; i++) {
+                    printf("%d. Emri: %s | Progres: %d%% | Status: ",
+                           i + 1,
+                           lista[i].emri,
+                           lista[i].progres);
+
+                    shfaqStatus(lista[i].status);
+                    printf("\n");
+                }
+                break;
+
+            case 3:
+                printf("Duke dale nga programi...\n");
+                return 0;
+
+            default:
+                printf("Zgjedhje e pavlefshme! Provo perseri.\n");
+        }
+    }
+
+    return 0;
+}
