@@ -1,0 +1,148 @@
+import java.util.Scanner;
+
+// ENUM për statusin
+enum Status {
+    FAIL,
+    PASS,
+    EXCELLENT
+}
+
+// Klasa për regjistrim
+class StudentProgress {
+    String name;
+    int score;
+    Status status;
+
+    public StudentProgress(String name, int score, Status status) {
+        this.name = name;
+        this.score = score;
+        this.status = status;
+    }
+
+    public void display() {
+        System.out.println("Emri: " + name +
+                " | Piket: " + score +
+                " | Statusi: " + status);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        final int MAX = 5;
+        StudentProgress[] records = new StudentProgress[MAX];
+        int count = 0;
+
+        int choice;
+
+        do {
+            System.out.println("\n--- MENU ---");
+            System.out.println("1. Shto regjistrim");
+            System.out.println("2. Shfaq regjistrimet");
+            System.out.println("3. Dil");
+            System.out.print("Zgjedhja: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("❌ Ju lutem vendosni nje numer!");
+                scanner.next(); // pastron input
+                continue;
+            }
+
+            choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
+                case 1:
+                    if (count >= MAX) {
+                        System.out.println("⚠️ Arrite maksimumin e regjistrimeve!");
+                        break;
+                    }
+
+                    System.out.print("Shkruaj emrin: ");
+                    String name = scanner.nextLine();
+
+                    int score;
+                    while (true) {
+                        System.out.print("Shkruaj piket (0-100): ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("❌ Vendos numer valid!");
+                            scanner.next();
+                            continue;
+                        }
+
+                        score = scanner.nextInt();
+
+                        if (score < 0 || score > 100) {
+                            System.out.println("❌ Piket duhet 0-100!");
+                        } else {
+                            break;
+                        }
+                    }
+
+                    // Zgjedhja e statusit me SWITCH
+                    Status status = null;
+
+                    while (status == null) {
+                        System.out.println("\nZgjedh statusin:");
+                        System.out.println("1. FAIL");
+                        System.out.println("2. PASS");
+                        System.out.println("3. EXCELLENT");
+                        System.out.print("Zgjedhja: ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("❌ Zgjedhje e pavlefshme!");
+                            scanner.next();
+                            continue;
+                        }
+
+                        int statusChoice = scanner.nextInt();
+
+                        switch (statusChoice) {
+                            case 1:
+                                status = Status.FAIL;
+                                break;
+                            case 2:
+                                status = Status.PASS;
+                                break;
+                            case 3:
+                                status = Status.EXCELLENT;
+                                break;
+                            default:
+                                System.out.println("❌ Zgjedhje e pavlefshme! Provo perseri.");
+                        }
+                    }
+
+                    records[count] = new StudentProgress(name, score, status);
+                    count++;
+
+                    System.out.println("✅ Regjistrimi u shtua!");
+                    break;
+
+                case 2:
+                    if (count == 0) {
+                        System.out.println("⚠️ Nuk ka regjistrime!");
+                    } else {
+                        System.out.println("\n--- REGJISTRIMET ---");
+                        for (int i = 0; i < count; i++) {
+                            System.out.print((i + 1) + ". ");
+                            records[i].display();
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Duke dalur...");
+                    break;
+
+                default:
+                    System.out.println("❌ Zgjedhje e pavlefshme!");
+            }
+
+        } while (true);
+
+    }
+}
