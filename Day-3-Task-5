@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+// Krijimi i enum me 4 vlera
+typedef enum {
+    FILLOR = 1,
+    MESATAR,
+    AVANCUAR,
+    EKSPERT
+} Niveli;
+
+int main() {
+    int zgjedhja;
+    int valide = 0, pavlefshme = 0;
+
+    printf("Zgjidh nivelin e nxenesit:\n");
+    printf("1 - Fillor\n");
+    printf("2 - Mesatar\n");
+    printf("3 - Avancuar\n");
+    printf("4 - Ekspert\n");
+
+    // Loop për 3 raste testimi
+    for(int i = 1; i <= 3; i++) {
+        printf("\nRasti %d - Jep zgjedhjen: ", i);
+        scanf("%d", &zgjedhja);
+
+        // Kontrolli i input-it dhe lidhja me enum
+        switch(zgjedhja) {
+            case FILLOR:
+                printf("Nxenesi eshte ne nivel fillor.\n");
+                valide++;
+                break;
+
+            case MESATAR:
+                printf("Nxenesi eshte ne nivel mesatar.\n");
+                valide++;
+                break;
+
+            case AVANCUAR:
+                printf("Nxenesi eshte ne nivel avancuar.\n");
+                valide++;
+                break;
+
+            case EKSPERT:
+                printf("Nxenesi eshte ne nivel ekspert.\n");
+                valide++;
+                break;
+
+            default:
+                printf("Zgjedhje e pavlefshme!\n");
+                pavlefshme++;
+        }
+    }
+
+    // Statistikat
+    printf("\n--- Statistikat ---\n");
+    printf("Zgjedhje valide: %d\n", valide);
+    printf("Zgjedhje te pavlefshme: %d\n", pavlefshme);
+
+    return 0;
+}
