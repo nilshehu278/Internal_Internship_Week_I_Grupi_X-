@@ -1,0 +1,265 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_STUDENTS 100
+#define NAME_LEN 50
+#define SUBJECT_COUNT 3
+
+const char *SUBJECT_NAMES[SUBJECT_COUNT] = {"Math", "Science", "English"};
+
+typedef struct {
+    char name[NAME_LEN];
+    float marks[SUBJECT_COUNT];
+    float average;
+    char grade;
+} Student;
+
+void clearInputBuffer(void) {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {
+    }
+}
+
+void printLine(char ch, int length) {
+    for (int i = 0; i < length; i++) {
+        putchar(ch);
+    }
+    putchar('\n');
+}
+
+void printHeader(const char *title) {
+    printLine('=', 68);
+    printf("%-68s\n", title);
+    printLine('=', 68);
+}
+
+float calculateAverage(const float marks[SUBJECT_COUNT]) {
+    float total = 0.0f;
+    for (int i = 0; i < SUBJECT_COUNT; i++) {
+        total += marks[i];
+    }
+    return total / SUBJECT_COUNT;
+}
+
+char calculateGrade(float average) {
+    if (average >= 90.0f) return 'A';
+    if (average >= 80.0f) return 'B';
+    if (average >= 70.0f) return 'C';
+    if (average >= 60.0f) return 'D';
+    return 'F';
+}
+
+void recalculateStudent(Student *student) {
+    student->average = calculateAverage(student->marks);
+    student->grade = calculateGrade(student->average);
+}
+
+int findStudentIndexByName(const Student students[], int count, const char *name) {
+    for (int i = 0; i < count; i++) {
+        if (strcmp(students[i].name, name) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+float readValidatedMark(const char *subject) {
+    float mark;
+    while (1) {
+        printf("Enter %-8s mark (0-100): ", subject);
+        if (scanf("%f", &mark) == 1 && mark >= 0.0f && mark <= 100.0f) {
+            clearInputBuffer();
+            return mark;
+        }
+        printf("Invalid input. Please enter a number between 0 and 100.\n");
+        clearInputBuffer();
+    }
+}
+
+void readMarks(float marks[SUBJECT_COUNT]) {
+    for (int i = 0; i < SUBJECT_COUNT; i++) {
+        marks[i] = readValidatedMark(SUBJECT_NAMES[i]);
+    }
+}
+
+void printTableHeader(void) {
+    printLine('-', 68);
+    printf("| %-3s | %-20s | %-7s | %-7s | %-7s | %-7s | %-5s |\n",
+           "#", "Name", SUBJECT_NAMES[0], SUBJECT_NAMES[1], SUBJECT_NAMES[2], "Average", "Grade");
+    printLine('-', 68);
+}
+
+void printStudentRow(const Student *student, int index) {
+    printf("| %-3d | %-20s | %-7.1f | %-7.1f | %-7.1f | %-7.2f | %-5c |\n",
+           index + 1,
+           student->name,
+           student->marks[0],
+           student->marks[1],
+           student->marks[2],
+           student->average,
+           student->grade);
+}
+
+void addStudent(Student students[], int *count) {
+    printHeader("Add New Student");
+
+    if (*count >= MAX_STUDENTS) {
+        printf("Student list is full. Maximum capacity reached (%d).\n", MAX_STUDENTS);
+        return;
+    }
+
+    Student newStudent;
+    printf("Enter student name: ");
+    if (fgets(newStudent.name, NAME_LEN, stdin) == NULL) {
+        printf("Failed to read name.\n");
+        return;
+    }
+    newStudent.name[strcspn(newStudent.name, "\n")] = '\0';
+
+    if (strlen(newStudent.name) == 0) {
+        printf("Name cannot be empty.\n");
+        return;
+    }
+
+    if (findStudentIndexByName(students, *count, newStudent.name) != -1) {
+        printf("A student with this name already exists.\n");
+        return;
+    }
+
+    readMarks(newStudent.marks);
+    recalculateStudent(&newStudent);
+
+    students[*count] = newStudent;
+    (*count)++;
+
+    printf("Student '%s' added successfully. Average: %.2f, Grade: %c\n",
+           newStudent.name,
+           newStudent.average,
+           newStudent.grade);
+}
+
+void updateStudentMarks(Student students[], int count) {
+    printHeader("Update Student Marks");
+
+    if (count == 0) {
+        printf("No students available to update.\n");
+        return;
+    }
+
+    char name[NAME_LEN];
+    printf("Enter student name to update: ");
+    if (fgets(name, NAME_LEN, stdin) == NULL) {
+        printf("Failed to read name.\n");
+        return;
+    }
+    name[strcspn(name, "\n")] = '\0';
+
+    int index = findStudentIndexByName(students, count, name);
+    if (index == -1) {
+        printf("Student '%s' not found.\n", name);
+        return;
+    }
+
+    printf("Updating marks for %s:\n", students[index].name);
+    readMarks(students[index].marks);
+    recalculateStudent(&students[index]);
+
+    printf("Marks updated. New Average: %.2f, New Grade: %c\n",
+           students[index].average,
+           students[index].grade);
+}
+
+void listStudents(const Student students[], int count) {
+    printHeader("Student Progress List");
+
+    if (count == 0) {
+        printf("No students have been added yet.\n");
+        return;
+    }
+
+    printTableHeader();
+    for (int i = 0; i < count; i++) {
+        printStudentRow(&students[i], i);
+    }
+    printLine('-', 68);
+}
+
+void showSummary(const Student students[], int count) {
+    printHeader("Class Summary");
+
+    if (count == 0) {
+        printf("No student data available for summary.\n");
+        return;
+    }
+
+    float totalAverage = 0.0f;
+    int passed = 0;
+
+    for (int i = 0; i < count; i++) {
+        totalAverage += students[i].average;
+        if (students[i].grade != 'F') {
+            passed++;
+        }
+    }
+
+    printf("Total Students : %d\n", count);
+    printf("Class Average  : %.2f\n", totalAverage / count);
+    printf("Passed         : %d\n", passed);
+    printf("Needs Support  : %d\n", count - passed);
+}
+
+int readMenuChoice(void) {
+    int choice;
+    while (1) {
+        printHeader("Console Student Progress Tracker - Final Version 8");
+        printf("1) Add student\n");
+        printf("2) Update student marks\n");
+        printf("3) List all students\n");
+        printf("4) Show class summary\n");
+        printf("5) Exit\n");
+        printLine('-', 68);
+        printf("Choose an option: ");
+
+        if (scanf("%d", &choice) == 1 && choice >= 1 && choice <= 5) {
+            clearInputBuffer();
+            return choice;
+        }
+
+        printf("Invalid choice. Please enter a number from 1 to 5.\n\n");
+        clearInputBuffer();
+    }
+}
+
+int main(void) {
+    Student students[MAX_STUDENTS];
+    int studentCount = 0;
+
+    while (1) {
+        int choice = readMenuChoice();
+
+        switch (choice) {
+            case 1:
+                addStudent(students, &studentCount);
+                break;
+            case 2:
+                updateStudentMarks(students, studentCount);
+                break;
+            case 3:
+                listStudents(students, studentCount);
+                break;
+            case 4:
+                showSummary(students, studentCount);
+                break;
+            case 5:
+                printHeader("Goodbye");
+                printf("Progress saved in current session. Exiting now.\n");
+                return 0;
+            default:
+                break;
+        }
+
+        printf("\nPress Enter to continue...");
+        getchar();
+    }
+}
