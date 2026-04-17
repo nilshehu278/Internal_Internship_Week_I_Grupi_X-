@@ -1,0 +1,64 @@
+#include <stdio.h>
+
+#define MAX 100   // kapaciteti maksimal
+
+// Struktura e një regjistrimi (mund ta zgjerosh më vonë)
+typedef struct {
+    char emri[50];
+    int progres;
+} Regjistrim;
+
+int main() {
+    Regjistrim lista[MAX];
+    int count = 0;   // numri aktual i regjistrimeve
+    int zgjedhja;
+
+    do {
+        printf("\n--- MENU ---\n");
+        printf("1. Shto regjistrim\n");
+        printf("2. Shfaq te gjitha regjistrimet\n");
+        printf("3. Dil\n");
+        printf("Zgjedhja: ");
+        scanf("%d", &zgjedhja);
+
+        if (zgjedhja == 1) {
+            if (count >= MAX) {
+                printf("Nuk mund te shtosh me regjistrime! Kapaciteti eshte i mbushur.\n");
+            } else {
+                printf("Sheno emrin: ");
+                scanf(" %[^\n]", lista[count].emri);
+
+                printf("Sheno progresin (0-100): ");
+                scanf("%d", &lista[count].progres);
+
+                count++;
+                printf("Regjistrimi u shtua me sukses!\n");
+            }
+        }
+
+        else if (zgjedhja == 2) {
+            if (count == 0) {
+                printf("Nuk ka regjistrime te ruajtura.\n");
+            } else {
+                printf("\n--- LISTA E REGJISTRIMEVE ---\n");
+                for (int i = 0; i < count; i++) {
+                    printf("%d. Emri: %s | Progresi: %d%%\n",
+                           i + 1,
+                           lista[i].emri,
+                           lista[i].progres);
+                }
+            }
+        }
+
+        else if (zgjedhja == 3) {
+            printf("Duke dalë nga programi...\n");
+        }
+
+        else {
+            printf("Zgjedhje e pavlefshme!\n");
+        }
+
+    } while (zgjedhja != 3);
+
+    return 0;
+}
