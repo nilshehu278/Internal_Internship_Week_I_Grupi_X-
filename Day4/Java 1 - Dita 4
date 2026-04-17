@@ -1,0 +1,79 @@
+import java.util.Scanner;
+
+// Klasa për një regjistrim
+class StudentProgress {
+    String name;
+    int score;
+
+    public StudentProgress(String name, int score) {
+        this.name = name;
+        this.score = score;
+    }
+
+    public void display() {
+        System.out.println("Emri: " + name + " | Piket: " + score);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        final int MAX = 5; // kapaciteti maksimal
+        StudentProgress[] records = new StudentProgress[MAX];
+        int count = 0;
+
+        int choice;
+
+        do {
+            System.out.println("\n--- MENU ---");
+            System.out.println("1. Shto regjistrim");
+            System.out.println("2. Shfaq te gjitha regjistrimet");
+            System.out.println("3. Dil");
+            System.out.print("Zgjedhja: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // pastrim buffer
+
+            switch (choice) {
+                case 1:
+                    if (count >= MAX) {
+                        System.out.println("Nuk mund te shtoni me regjistrime! (Arrite maksimumin)");
+                    } else {
+                        System.out.print("Shkruaj emrin: ");
+                        String name = scanner.nextLine();
+
+                        System.out.print("Shkruaj piket (0-100): ");
+                        int score = scanner.nextInt();
+
+                        records[count] = new StudentProgress(name, score);
+                        count++;
+
+                        System.out.println(" Regjistrimi u shtua me sukses!");
+                    }
+                    break;
+
+                case 2:
+                    if (count == 0) {
+                        System.out.println("Nuk ka regjistrime!");
+                    } else {
+                        System.out.println("\n--- LISTA E REGJISTRIMEVE ---");
+                        for (int i = 0; i < count; i++) {
+                            System.out.print((i + 1) + ". ");
+                            records[i].display();
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Duke dalur nga programi...");
+                    break;
+
+                default:
+                    System.out.println("Zgjedhje e pavlefshme!");
+            }
+
+        } while (choice != 3);
+
+        scanner.close();
+    }
+}
